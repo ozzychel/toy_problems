@@ -7,18 +7,36 @@ Given the array nums after the rotation and an integer target, return the index 
 */
 
 var search = function(nums, target) {
-  if(nums.length === 1) return nums[0] === target ? 0 : -1;
-  let indArr = Array.from({length: nums.length}, (_, i) => i);
-  indArr = indArr.sort((a,b) => nums[a] - nums[b])
-  let left = 0, right = nums.length - 1;
-  while(left <= right) {
-    let mid = Math.floor(left + ((right-left)/2));
-    let index = indArr[mid];
-    if(nums[index] === target) return index;
-    if(nums[index] > target) right = mid - 1;
-    if(nums[index] < target) left = mid + 1;
+  // O(logN) time | O(1) space
+  for (let left = 0, right = nums.length - 1; left <= right;) {
+    let mid = Math.floor((left + right) / 2);
+    let num;
+    if (nums[mid] === target) return mid;
+    if((nums[0] > target) === (nums[0] > nums[mid])) {
+      num = nums[mid];
+    } else {
+      if(nums[0] > target) num = -Infinity;
+      else num = Infinity;
+    }
+    if (num < target) left = mid + 1;
+    else right = mid - 1;
   }
   return -1;
+
+  // O(N) time | O(N) space
+  // if(nums.length === 1) return nums[0] === target ? 0 : -1;
+  // let indArr = Array.from({length: nums.length}, (_, i) => i);
+  // indArr = indArr.sort((a,b) => nums[a] - nums[b])
+  // let left = 0, right = nums.length - 1;
+  // while(left <= right) {
+  //   let mid = Math.floor(left + ((right-left)/2));
+  //   let index = indArr[mid];
+  //   if(nums[index] === target) return index;
+  //   if(nums[index] > target) right = mid - 1;
+  //   if(nums[index] < target) left = mid + 1;
+  // }
+  // return -1;
+
 };
 
 console.log(search([1], 2)) // -1
